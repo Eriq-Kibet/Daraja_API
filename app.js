@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 const port = 7080;
 const consumerKey = "p5lDJyvTDdnnhTsXPjGrkpXeq67R3Wr0";
 const consumerSecret = "491N3hNKFpDPYMGt";
+const shortCode = 600990;
 
 // Routes
 app.get("/", (req, res) => {
@@ -29,10 +30,10 @@ app.get("/register", access, (req, res) => {
       method: "POST",
       headers: { Authorization: auth },
       json: {
-        ShortCode: 600990,
+        ShortCode: shortCode,
         ResponseType: "Completed",
-        ConfirmationURL: "https://publicIP/confirmation_url",
-        ValidationURL: "https://publicIP/validation_url",
+        ConfirmationURL: "https://Your public IP/confirmation",
+        ValidationURL: "https://Your public IP/validation",
       },
     },
     (error, response, body) => {
@@ -72,7 +73,7 @@ app.get("/simulate", access, (req, res) => {
         Amount: "10",
         Msisdn: "254708374149",
         BillRefNumber: "TestAPI",
-        ShortCode: "600990",
+        ShortCode: shortCode.toString(),
       },
     },
     (error, response, body) => {
@@ -84,6 +85,49 @@ app.get("/simulate", access, (req, res) => {
   );
 });
 
+app.get("/balance", access, (req, res) => {
+  const url = "https://sandbox.safaricom.co.ke/mpesa/accountbalance/v1/query";
+  const auth = "Bearer " + req.access_token;
+  request(
+    {
+      url: url,
+      method: "POST",
+      headers: {
+        Authorization: auth,
+      },
+      json: {
+        CommandID: "AccountBalance",
+        PartyA: shortCode,
+        IdentifierType: "4",
+        Remarks: "sequence of characters up to 100 ",
+        Initiator: "testapi",
+        SecurityCredential:
+          "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919",
+        QueueTimeOutURL: "https://Your public IP/AccountBalance/queue/",
+        ResultURL: "https://Your public IP/AccountBalance/result/",
+      },
+    },
+    (error, response, body) => {
+      if (error) {
+        console.log(error);
+      }
+      res.status(200).json(body);
+    }
+  );
+});
+
+app.post("/timeout_url", access, (req, res) => {
+  console.log(".............timeout_url.................");
+  res.send(req.body);
+  console.log(req.body);
+});
+
+app.post("/result_url", access, (req, res) => {
+  res.send(req.body);
+  console.log(".............result_url.................");
+  console.log(req.body);
+  console.log(res);
+});
 //generating access tokens
 function access(req, res, next) {
   const url =
