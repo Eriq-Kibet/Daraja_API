@@ -6,7 +6,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
-const port = 7080;
+const port = 5050;
 const consumerKey = "p5lDJyvTDdnnhTsXPjGrkpXeq67R3Wr0";
 const consumerSecret = "491N3hNKFpDPYMGt";
 const shortCode = "600991";
@@ -142,11 +142,13 @@ app.get("/stk", access, (req, res) => {
   const auth = "Bearer " + req.access_token;
 
   let date = new Date();
+  console.log("Date", date);
+  let month = date.getMonth() + 1;
   const timestamp =
     date.getFullYear() +
     "" +
     "" +
-    date.getMonth() +
+    month +
     "" +
     "" +
     date.getDate() +
@@ -164,14 +166,14 @@ app.get("/stk", access, (req, res) => {
       "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919" +
       timestamp
   ).toString("base64");
-
+  console.log(timestamp);
 
   request(
     {
       url: url,
       method: "POST",
       headers: {
-        Authorization: "Basic " + auth
+        Authorization:  auth
       },
       json: {
         BusinessShortCode: "174379",
@@ -207,13 +209,12 @@ app.get("/b2c", access, (req, res) => {
   const url = "https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest";
   const auth = "Bearer " + req.access_token;
 
-
   request(
     {
       url: url,
       method: "POST",
       headers: {
-        Authorization: "Basic " + auth
+        Authorization: auth
       },
       json: {
         InitiatorName: "testapi",
