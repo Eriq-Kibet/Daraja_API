@@ -26,7 +26,6 @@ app.get("/access_token", access, (req, res) => {
 app.get("/register", access, (req, res) => {
   const url = "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl";
   const auth = "Bearer " + req.access_token;
-
   request(
     {
       url: url,
@@ -35,8 +34,8 @@ app.get("/register", access, (req, res) => {
       json: {
         ShortCode: shortCode,
         ResponseType: "Completed",
-        ConfirmationURL: "https://mydomain.com/confirmation",
-        ValidationURL: "https://mydomain.com/validation"
+        ConfirmationURL: "https://197.232.126.52/confirmation",
+        ValidationURL: "https://197.232.126.52/validation"
       }
     },
     (error, response, body) => {
@@ -49,14 +48,14 @@ app.get("/register", access, (req, res) => {
 });
 
 // Confirmation message from Mpesa
-app.post("/confirmation", access, (req, res) => {
+app.post("/confirmation", (req, res) => {
   console.log(".............confirmation.................");
   res.send(req.body);
   console.log(req.body);
 });
 
 // Validation message from Mpesa
-app.post("/validation", access, (req, res) => {
+app.post("/validation", (req, res) => {
   res.send(req.body);
   console.log(".............validation.................");
   console.log(req.body);
@@ -110,8 +109,8 @@ app.get("/balance", access, (req, res) => {
         Initiator: "testapi",
         SecurityCredential:
           "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919",
-        QueueTimeOutURL: "https://mydomain.com/AccountBalance/queue",
-        ResultURL: "https://mydomain.com/AccountBalance/result"
+        QueueTimeOutURL: "https://197.232.126.52/AccountBalance/queue",
+        ResultURL: "https://197.232.126.52/AccountBalance/result"
       }
     },
     (error, response, body) => {
@@ -124,13 +123,13 @@ app.get("/balance", access, (req, res) => {
 });
 //simulation Result
 
-app.post("/AccountBalance/queue", access, (req, res) => {
+app.post("/AccountBalance/queue", (req, res) => {
   console.log(".............AccountBalance queue.................");
   res.send(req.body);
   console.log(req.body);
 });
 
-app.post("/AccountBalance/result", access, (req, res) => {
+app.post("/AccountBalance/result", (req, res) => {
   res.send(req.body);
   console.log(".............AccountBalance result.................");
   console.log(req.body);
@@ -165,6 +164,8 @@ app.get("/stk", access, (req, res) => {
       "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919" +
       timestamp
   ).toString("base64");
+
+
   request(
     {
       url: url,
@@ -180,8 +181,8 @@ app.get("/stk", access, (req, res) => {
         Amount: "1",
         PartyA: "254708374149",
         PartyB: "174379",
-        PhoneNumber: "254708374149",
-        CallBackURL: "https://mydomain.com/stk_callback",
+        PhoneNumber: "254722731719",
+        CallBackURL: "https://197.232.126.52/stk_callback",
         AccountReference: "CompanyXLTD",
         TransactionDesc: "Payment of X"
       }
@@ -206,6 +207,7 @@ app.get("/b2c", access, (req, res) => {
   const url = "https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest";
   const auth = "Bearer " + req.access_token;
 
+
   request(
     {
       url: url,
@@ -222,8 +224,8 @@ app.get("/b2c", access, (req, res) => {
         PartyA: "600981",
         PartyB: "254708374149",
         Remarks: "Test remarks ",
-        QueueTimeOutURL: "https://mydomain.com/b2c/queue",
-        ResultURL: "https://mydomain.com/b2c/result",
+        QueueTimeOutURL: "https://197.232.126.52/b2c/queue",
+        ResultURL: "https://197.232.126.52/b2c/result",
         Occassion: "Sent Wrongly"
       }
     },
