@@ -173,7 +173,7 @@ app.get("/stk", access, (req, res) => {
       url: url,
       method: "POST",
       headers: {
-        Authorization:  auth
+        Authorization: auth
       },
       json: {
         BusinessShortCode: "174379",
